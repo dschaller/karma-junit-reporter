@@ -101,6 +101,9 @@ var JUnitReporter = function (baseReporterDecorator, config, logger, helper, for
   }
 
   this.onBrowserComplete = function (browser) {
+    if (!suites) {
+        return // don't die if async processes aren't finished
+    }
     var suite = suites[browser.id]
     var result = browser.lastResult
     if (!suite || !result) {
