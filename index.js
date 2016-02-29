@@ -96,14 +96,45 @@ var JUnitReporter = function (baseReporterDecorator, config, logger, helper, for
     browsers.forEach(initializeXmlForBrowser)
   }
 
-  this.onBrowserStart = function (browser) {
+  this.onBrowserRegister = function (browser) {
+    console.log('Processing on browser register')
+    console.log('browser:')
+    console.log(browser)
+  }
+
+  this.onBrowserError = function (browser, error) {
+    console.log('Processing on browser error')
+    console.log('browser:')
+    console.log(browser)
+    console.log('error:')
+    console.log(error)
+  }
+
+  this.onBrowserStart = function (browser, info) {
+    console.log('Processing on browser start')
+    console.log('browser:')
+    console.log(browser)
+    console.log('info:')
+    console.log(info)
     initializeXmlForBrowser(browser)
   }
 
-  this.onBrowserComplete = function (browser) {
+  this.onBrowsersChange = function (browsers) {
+    console.log('Processing on browsers change')
+    console.log('browsers:')
+    browsers.forEach(function(browser) {
+      console.log('browser:')
+      console.log(browser)
+    })
+  }
+
+  this.onBrowserComplete = function (browser, results) {
     console.log('Processing on browser complete')
     console.log('browser sending complete')
     console.log(browser)
+    console.log('results:')
+    console.log(results)
+    if (browser.state != 1))
     var suite = suites[browser.id]
     var result = browser.lastResult
     if (!suite || !result) {
@@ -121,13 +152,25 @@ var JUnitReporter = function (baseReporterDecorator, config, logger, helper, for
     writeXmlForBrowser(browser)
   }
 
-  this.onRunComplete = function (runningBrowsers) {
+  this.onRunStart = function (browsers) {
+      console.log('Processing on run start')
+      console.log('browsers')
+      browsers.forEach(function(browser) {
+        console.log('browser:')
+        console.log(browser)
+      })
+  }
+
+  this.onRunComplete = function (runningBrowsers, results) {
     console.log('Processing on run complete')
     console.log('Running browsers')
     runningBrowsers.forEach(function(browser) {
         console.log('Browser:')
         console.log(browser)
     })
+    console.log('results:')
+    console.log(results)
+    suites = null
     allMessages.length = 0
   }
 
@@ -154,7 +197,6 @@ var JUnitReporter = function (baseReporterDecorator, config, logger, helper, for
     if (pendingFileWritings) {
       fileWritingFinished = done
     } else {
-      suites = null
       done()
     }
   }
