@@ -134,7 +134,6 @@ var JUnitReporter = function (baseReporterDecorator, config, logger, helper, for
     console.log(browser)
     console.log('results:')
     console.log(results)
-    if (browser.state != 1))
     var suite = suites[browser.id]
     var result = browser.lastResult
     if (!suite || !result) {
