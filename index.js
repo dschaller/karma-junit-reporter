@@ -101,9 +101,9 @@ var JUnitReporter = function (baseReporterDecorator, config, logger, helper, for
   }
 
   this.onBrowserComplete = function (browser) {
-    if (!suites) {
-        return // don't die if async processes aren't finished
-    }
+    console.log('Processing on browser complete')
+    console.log('browser sending complete')
+    console.log(browser)
     var suite = suites[browser.id]
     var result = browser.lastResult
     if (!suite || !result) {
@@ -121,8 +121,13 @@ var JUnitReporter = function (baseReporterDecorator, config, logger, helper, for
     writeXmlForBrowser(browser)
   }
 
-  this.onRunComplete = function () {
-    suites = null
+  this.onRunComplete = function (runningBrowsers) {
+    console.log('Processing on run complete')
+    console.log('Running browsers')
+    runningBrowsers.forEach(function(browser) {
+        console.log('Browser:')
+        console.log(browser)
+    })
     allMessages.length = 0
   }
 
@@ -149,6 +154,7 @@ var JUnitReporter = function (baseReporterDecorator, config, logger, helper, for
     if (pendingFileWritings) {
       fileWritingFinished = done
     } else {
+      suites = null
       done()
     }
   }
