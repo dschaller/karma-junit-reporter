@@ -90,6 +90,11 @@ var JUnitReporter = function (baseReporterDecorator, config, logger, helper, for
   }
 
   this.onRunStart = function (browsers) {
+    console.log('On run start')
+    console.log('browser:')
+    browsers.forEach(function(browser) {
+        console.log(browser)
+    }
     suites = Object.create(null)
 
     // TODO(vojta): remove once we don't care about Karma 0.10
