@@ -37,6 +37,8 @@ var JUnitReporter = function (baseReporterDecorator, config, logger, helper, for
   ]
 
   var initializeXmlForBrowser = function (browser) {
+    console.log('initialize xml for browser')
+    console.log(browser)
     var timestamp = (new Date()).toISOString().substr(0, 19)
     var suite = suites[browser.id] = builder.create('testsuite')
     suite.att('name', browser.name)
@@ -50,6 +52,8 @@ var JUnitReporter = function (baseReporterDecorator, config, logger, helper, for
   }
 
   var writeXmlForBrowser = function (browser) {
+    console.log('writing xml for browser')
+    console.log(browser)
     var safeBrowserName = browser.name.replace(/ /g, '_')
     var newOutputFile
     if (outputFile != null) {
@@ -92,9 +96,6 @@ var JUnitReporter = function (baseReporterDecorator, config, logger, helper, for
   this.onRunStart = function (browsers) {
     console.log('On run start')
     console.log('browser:')
-    browsers.forEach(function(browser) {
-        console.log(browser)
-    }
     suites = Object.create(null)
 
     // TODO(vojta): remove once we don't care about Karma 0.10
@@ -154,15 +155,6 @@ var JUnitReporter = function (baseReporterDecorator, config, logger, helper, for
     suite.ele('system-err')
 
     writeXmlForBrowser(browser)
-  }
-
-  this.onRunStart = function (browsers) {
-      console.log('Processing on run start')
-      console.log('browsers')
-      browsers.forEach(function(browser) {
-        console.log('browser:')
-        console.log(browser)
-      })
   }
 
   this.onRunComplete = function (runningBrowsers, results) {
