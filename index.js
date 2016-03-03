@@ -140,8 +140,11 @@ var JUnitReporter = function (baseReporterDecorator, config, logger, helper, for
     console.log(browser)
     console.log('results:')
     console.log(results)
-    var suiteIndex = suites.indexOf(browser.id)
-    if ( browser.state != 5 || suiteIndex < 0) {
+    var suiteIndex = -1
+    if ( suites != null ) {
+        suiteIndex = suites.indexOf(browser.id)
+    }
+    if ( browser.state != 5 || suiteIndex < 0 ) {
         return
     }
     var suite = suites[browser.id]
