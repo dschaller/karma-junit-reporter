@@ -139,15 +139,15 @@ var JUnitReporter = function (baseReporterDecorator, config, logger, helper, for
     console.log(results)
     console.log('running browsers:')
     console.log(runningBrowsers)
-    if ( browser.state != 5 || !(browser.id in runningBrowsers) ) {
-        return
-    }
+    // if ( browser.state != 5 || !(browser.id in runningBrowsers) ) {
+    //     return
+    // }
     var suite = suites[browser.id]
     var result = browser.lastResult
     if (!suite || !result) {
       return // don't die if browser didn't start
     }
-    delete runningBrowsers[browser.id]
+    // delete runningBrowsers[browser.id]
     console.log('running browsers post delete:')
     console.log(runningBrowsers)
 
@@ -173,11 +173,9 @@ var JUnitReporter = function (baseReporterDecorator, config, logger, helper, for
     console.log(results)
     console.log('running browsers:')
     console.log(runningBrowsers)
-    if ( Object.keys(runningBrowsers).length != 0 ) {
-        return
-    }
-    suites = null
-    allMessages.length = 0
+    // if ( Object.keys(runningBrowsers).length != 0 ) {
+    //     return
+    // }
   }
 
   this.specSuccess = this.specSkipped = this.specFailure = function (browser, result) {
@@ -202,6 +200,8 @@ var JUnitReporter = function (baseReporterDecorator, config, logger, helper, for
   // wait for writing all the xml files, before exiting
   this.onExit = function (done) {
     console.log('Processing on exit')
+    suites = null
+    allMessages.length = 0
     if (pendingFileWritings) {
       fileWritingFinished = done
     } else {
