@@ -131,6 +131,9 @@ var JUnitReporter = function (baseReporterDecorator, config, logger, helper, for
   this.onBrowserComplete = function (browser, results) {
     console.log('Processing on browser complete')
     console.log('browser sending complete')
+    console.log('Calling function:')
+    console.log(arguments.callee.caller.toString())
+    console.log(arguments.callee.caller.name)
     console.log(browser)
     console.log('results:')
     console.log(results)
