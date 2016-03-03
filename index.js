@@ -125,15 +125,6 @@ var JUnitReporter = function (baseReporterDecorator, config, logger, helper, for
     initializeXmlForBrowser(browser)
   }
 
-  this.onBrowsersChange = function (browsers) {
-    console.log('Processing on browsers change')
-    console.log('browsers:')
-    browsers.forEach(function(browser) {
-      console.log('browser:')
-      console.log(browser)
-    })
-  }
-
   this.onBrowserComplete = function (browser, results) {
     console.log('Processing on browser complete')
     console.log('browser sending complete')
@@ -170,6 +161,9 @@ var JUnitReporter = function (baseReporterDecorator, config, logger, helper, for
     })
     console.log('results:')
     console.log(results)
+    if ( Object.keys(suites).length != 0 ) {
+        return
+    }
     suites = null
     allMessages.length = 0
   }
@@ -195,6 +189,7 @@ var JUnitReporter = function (baseReporterDecorator, config, logger, helper, for
 
   // wait for writing all the xml files, before exiting
   this.onExit = function (done) {
+    console.log('Processing on exit')
     if (pendingFileWritings) {
       fileWritingFinished = done
     } else {
