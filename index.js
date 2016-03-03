@@ -14,6 +14,7 @@ var JUnitReporter = function (baseReporterDecorator, config, logger, helper, for
   var classNameFormatter = reporterConfig.classNameFormatter
 
   var suites
+  var runningBrowsers
   var pendingFileWritings = 0
   var fileWritingFinished = function () {}
   var allMessages = []
@@ -97,6 +98,7 @@ var JUnitReporter = function (baseReporterDecorator, config, logger, helper, for
     console.log('On run start')
     console.log('browser:')
     suites = Object.create(null)
+    runningBrowsers = Object.create(null)
 
     // TODO(vojta): remove once we don't care about Karma 0.10
     browsers.forEach(initializeXmlForBrowser)
@@ -123,6 +125,7 @@ var JUnitReporter = function (baseReporterDecorator, config, logger, helper, for
     console.log('info:')
     console.log(info)
     initializeXmlForBrowser(browser)
+    runningBrowsers[browser.id] = browser
   }
 
   this.onBrowserComplete = function (browser, results) {
@@ -131,7 +134,9 @@ var JUnitReporter = function (baseReporterDecorator, config, logger, helper, for
     console.log(browser)
     console.log('results:')
     console.log(results)
-    if ( browser.state != 5 || !(browser.id in suites) ) {
+    console.log('running browsers:')
+    console.log(runningBrowsers)
+    if ( browser.state != 5 || !(browser.id in runningBrowsers) ) {
         return
     }
     var suite = suites[browser.id]
@@ -139,7 +144,9 @@ var JUnitReporter = function (baseReporterDecorator, config, logger, helper, for
     if (!suite || !result) {
       return // don't die if browser didn't start
     }
-    delete suites[browser.id]
+    delete runningBrowsers[browser.id]
+    console.log('running browsers post delete:')
+    console.log(runningBrowsers)
 
     suite.att('tests', result.total)
     suite.att('errors', result.disconnected || result.error ? 1 : 0)
@@ -161,7 +168,9 @@ var JUnitReporter = function (baseReporterDecorator, config, logger, helper, for
     })
     console.log('results:')
     console.log(results)
-    if ( Object.keys(suites).length != 0 ) {
+    console.log('running browsers:')
+    console.log(runningBrowsers)
+    if ( Object.keys(runningBrowsers).length != 0 ) {
         return
     }
     suites = null
