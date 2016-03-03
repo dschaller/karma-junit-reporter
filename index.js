@@ -140,7 +140,8 @@ var JUnitReporter = function (baseReporterDecorator, config, logger, helper, for
     console.log(browser)
     console.log('results:')
     console.log(results)
-    if ( browser.state != 5) {
+    var suiteIndex = suites.indexOf(browser.id)
+    if ( browser.state != 5 || suiteIndex < 0) {
         return
     }
     var suite = suites[browser.id]
@@ -148,6 +149,7 @@ var JUnitReporter = function (baseReporterDecorator, config, logger, helper, for
     if (!suite || !result) {
       return // don't die if browser didn't start
     }
+    suites.splice(suiteIndex, 1)
 
     suite.att('tests', result.total)
     suite.att('errors', result.disconnected || result.error ? 1 : 0)
@@ -174,6 +176,7 @@ var JUnitReporter = function (baseReporterDecorator, config, logger, helper, for
   }
 
   this.specSuccess = this.specSkipped = this.specFailure = function (browser, result) {
+    console.log('Spec results')
     var spec = suites[browser.id].ele('testcase', {
       name: typeof nameFormatter === 'function' ? nameFormatter(browser, result) : result.description,
       time: ((result.time || 0) / 1000),
