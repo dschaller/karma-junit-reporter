@@ -141,10 +141,7 @@ var JUnitReporter = function (baseReporterDecorator, config, logger, helper, for
     console.log('results:')
     console.log(results)
     var suiteIndex = -1
-    if ( suites != null ) {
-        suiteIndex = suites.indexOf(browser.id)
-    }
-    if ( browser.state != 5 || suiteIndex < 0 ) {
+    if ( browser.state != 5 || browser.id in suites ) {
         return
     }
     var suite = suites[browser.id]
@@ -152,7 +149,7 @@ var JUnitReporter = function (baseReporterDecorator, config, logger, helper, for
     if (!suite || !result) {
       return // don't die if browser didn't start
     }
-    suites.splice(suiteIndex, 1)
+    delete suites[browser.id]
 
     suite.att('tests', result.total)
     suite.att('errors', result.disconnected || result.error ? 1 : 0)
