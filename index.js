@@ -200,11 +200,11 @@ var JUnitReporter = function (baseReporterDecorator, config, logger, helper, for
   // wait for writing all the xml files, before exiting
   this.onExit = function (done) {
     console.log('Processing on exit')
-    suites = null
-    allMessages.length = 0
     if (pendingFileWritings) {
       fileWritingFinished = done
     } else {
+      suites = null
+      allMessages.length = 0
       done()
     }
   }
